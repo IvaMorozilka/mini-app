@@ -1,30 +1,22 @@
 # SVO mini app
 
-Технологический стек
+## Технологический стек:
+
 Бэкенд
 
-    FastAPI - современный быстрый фреймворк
-
-    SQLite - легковесная база данных
-
-    Tortoise-ORM - асинхронный ORM
-
+    FastAPI
+    SQLite
+    Tortoise-ORM
     Python 3.11+
 
 Фронтенд
 
-    React - UI библиотека
-
-    Vite - сборщик и dev-сервер
-
-    TypeScript - типизация
-
-    UI Kit - компоненты интерфейса
-
-    React Query - управление состоянием API
+    React 
+    Vite
+    TypeScript
+    UI Kit 
+    React Query 
 
 Инфраструктура
 
-    Docker - контейнеризация
-
-    Docker Compose - оркестрация
+    Docker/Docker Compose 
