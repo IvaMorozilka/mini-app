@@ -1,0 +1,16 @@
+.menu {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.link {
+  color: #534d4d;
+  text-decoration: none;
+}
