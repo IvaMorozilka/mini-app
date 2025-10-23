@@ -20,13 +20,14 @@ export default function Header({ title, showBackButton = false }: HeaderProps) {
     };
 
     return (
-        <header className='flex justify-items-start items-center gap-2 pb-2'>
+        <header className='flex justify-items-start items-start gap-2 pb-2'>
             {showBackButton && (
-                <Button onClick={handleBack}>
+                <Button onClick={handleBack} variant={'outline'}>
                     <ArrowLeft/>
+                    Назад
                 </Button>
             )}
-            <h1 className='text-left font-bold text-2xl'>{title}</h1>
+            <h1 className='text-left font-bold text-2xl leading-none m-0 translate-y-[-5px]'>{title}</h1>
         </header>
     );
 }
