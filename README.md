@@ -4,7 +4,7 @@
 
 ## Frontend
 
-Документация находиться [тут](frontend/README.md)
+Документация находиться [тут](frontend/)
 
 ## Backend
 
