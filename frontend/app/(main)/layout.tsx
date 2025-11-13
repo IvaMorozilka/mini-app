@@ -4,6 +4,7 @@ import BottomMenu from '@/components/BottomMenu';
 import { usePathname } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAnimation } from '@/context/AnimationContext';
+import { useEffect, useRef } from 'react';
 
 export default function MainLayout({
   children,
@@ -11,51 +12,117 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const { direction } = useAnimation();
+  const { direction, resetDirection } = useAnimation();
+  const prevPathnameRef = useRef(pathname);
+
+  // Оптимизированные варианты анимации для мобильных (только transform и opacity)
   const variants = {
-    forwardInitial: { x: '100%', opacity: 0 },
-    forwardEnter: { x: 0, opacity: 1 },
-    forwardExit: { x: '-100%', opacity: 0 },
-    backwardInitial: { x: '-100%', opacity: 0 },
-    backwardEnter: { x: 0, opacity: 1 },
-    backwardExit: { x: '100%', opacity: 0 },
+    forwardInitial: { 
+      x: '100%', 
+      opacity: 0,
+    },
+    forwardEnter: { 
+      x: 0, 
+      opacity: 1,
+    },
+    forwardExit: { 
+      x: '-100%', 
+      opacity: 0,
+    },
+    backwardInitial: { 
+      x: '-100%', 
+      opacity: 0,
+    },
+    backwardEnter: { 
+      x: 0, 
+      opacity: 1,
+    },
+    backwardExit: { 
+      x: '100%', 
+      opacity: 0,
+    },
+  };
+
+  // Оптимизированная spring transition для мобильных устройств
+  const springTransition = {
+    type: 'spring',
+    stiffness: 400,
+    damping: 35,
+    mass: 0.6,
+  };
+
+  // Быстрый tween transition для мгновенных переходов
+  const tweenTransition = {
+    type: 'tween',
+    ease: [0.25, 0.1, 0.25, 1], // Оптимизированная кривая для мобильных
+    duration: 0.2,
+  };
+
+  // Определяем, нужно ли использовать анимацию перехода
+  const shouldAnimate = direction !== 'none';
+  const currentDirection = shouldAnimate ? direction : 'none';
+  const enterCompleteRef = useRef(false);
+
+  // Сбрасываем флаг при изменении pathname
+  useEffect(() => {
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname;
+      enterCompleteRef.current = false;
+    }
+  }, [pathname]);
+
+  // Обработчик завершения enter анимации
+  const handleEnterComplete = () => {
+    if (shouldAnimate && !enterCompleteRef.current) {
+      enterCompleteRef.current = true;
+      // Сбрасываем направление после завершения enter анимации
+      resetDirection();
+    }
   };
 
   return (
-    // 1. Наш надежный flex-каркас. Он НЕ меняется.
     <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-background shadow-lg">
-      
-      {/* 2. "Сцена" для анимаций. Она занимает всё доступное место. */}
+      {/* Сцена для анимаций */}
       <div className="relative flex-1 overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
-          {/* 3. Анимируемый контент. Он позиционируется АБСОЛЮТНО внутри "сцены". */}
           <motion.main
             key={pathname}
-            className="absolute h-full w-full overflow-y-auto p-4" // <-- КЛЮЧЕВЫЕ ИЗМЕНЕНИЯ!
+            className="absolute h-full w-full overflow-y-auto p-4"
             variants={variants}
             initial={
-              direction === 'forward'
+              currentDirection === 'forward'
                 ? 'forwardInitial'
-                : direction === 'backward'
+                : currentDirection === 'backward'
                 ? 'backwardInitial'
-                : {}
+                : false
             }
-            animate={direction !== 'none' ? 'forwardEnter' : {}}
+            animate={
+              currentDirection === 'forward'
+                ? 'forwardEnter'
+                : currentDirection === 'backward'
+                ? 'backwardEnter'
+                : false
+            }
             exit={
-              direction === 'forward'
+              currentDirection === 'forward'
                 ? 'forwardExit'
-                : direction === 'backward'
+                : currentDirection === 'backward'
                 ? 'backwardExit'
-                : {}
+                : false
             }
-            transition={{ type: 'tween', ease: 'easeOut', duration: 0.15 }}
+            transition={shouldAnimate ? springTransition : tweenTransition}
+            onAnimationComplete={(definition) => {
+              // Сбрасываем направление только после завершения enter анимации
+              if (shouldAnimate && (definition === 'forwardEnter' || definition === 'backwardEnter')) {
+                handleEnterComplete();
+              }
+            }}
           >
             {children}
           </motion.main>
         </AnimatePresence>
       </div>
 
-      {/* 4. Меню по-прежнему является частью flex-каркаса и не затрагивается анимацией. */}
       <BottomMenu />
     </div>
   );

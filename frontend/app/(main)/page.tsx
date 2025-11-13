@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import CategorySection from '@/components/CategorySection';
 import ServiceCard from '@/components/ServiceCard';
@@ -13,6 +14,32 @@ import {
   type Service,
 } from '@/lib/services';
 import { Search } from 'lucide-react';
+
+// Оптимизированные варианты для мобильных (быстрее и плавнее)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.04,
+      delayChildren: 0.02,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 30,
+      mass: 0.5,
+    },
+  },
+};
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,14 +79,25 @@ export default function HomePage() {
 
   return (
     <>
-      <Header
-        title="Разделы"
-        subtitle="Социальные меры поддержки участников СВО и их семей в Ленинградской области"
-      />
+      <motion.div
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        <Header
+          title="Разделы"
+          subtitle="Социальные меры поддержки участников СВО и их семей в Ленинградской области"
+        />
+      </motion.div>
 
       <div className="space-y-4">
         {/* Search Bar */}
-        <div className="relative">
+        <motion.div
+          className="relative"
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2, delay: 0.05, ease: [0.25, 0.1, 0.25, 1] }}
+        >
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
           <Input
             type="search"
@@ -68,40 +106,65 @@ export default function HomePage() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-9"
           />
-        </div>
+        </motion.div>
 
         {/* Show search results or categories */}
         {searchQuery.trim() ? (
-          <div className="space-y-3">
+          <motion.div
+            className="space-y-3"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            key="search-results"
+          >
             {searchedServices.length > 0 ? (
               searchedServices.map((service, index) => (
-                <ServiceCard key={index} service={service} />
+                <motion.div key={index} variants={itemVariants}>
+                  <ServiceCard service={service} />
+                </motion.div>
               ))
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
+              <motion.div
+                className="text-center py-8 text-muted-foreground"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
                 <p>Услуги не найдены</p>
                 <p className="text-sm mt-1">
                   Попробуйте изменить параметры поиска
                 </p>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         ) : (
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            key="categories"
+          >
             {activeCategories.length > 0 ? (
-              activeCategories.map((category) => (
-                <CategorySection
-                  key={category.id}
-                  category={category}
-                  services={category.services}
-                />
+              activeCategories.map((category, index) => (
+                <motion.div key={category.id} variants={itemVariants}>
+                  <CategorySection
+                    category={category}
+                    services={category.services}
+                  />
+                </motion.div>
               ))
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
+              <motion.div
+                className="text-center py-8 text-muted-foreground"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
                 <p>Категории не найдены</p>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
         )}
       </div>
     </>

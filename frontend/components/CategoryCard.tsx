@@ -1,7 +1,8 @@
-'use client'; // <-- Обязательно
+'use client';
 
 import { useRouter } from 'next/navigation';
-import { useAnimation } from '@/context/AnimationContext'; // <-- Наш хук
+import { motion } from 'framer-motion';
+import { useAnimation } from '@/context/AnimationContext';
 
 type Category = {
   id: string;
@@ -13,22 +14,25 @@ export default function CategoryCard({ category }: { category: Category }) {
   const { setDirection } = useAnimation();
 
   const handleClick = () => {
-    setDirection('forward'); // 1. Устанавливаем направление
-    router.push(`/category/${category.id}`); // 2. Делаем переход
+    setDirection('forward');
+    router.push(`/category/${category.id}`);
   };
 
   return (
-    <div 
+    <motion.div
       onClick={handleClick}
-      style={{
-        padding: '2rem',
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        marginBottom: '1rem',
-        cursor: 'pointer'
+      className="p-8 border border-border rounded-lg mb-4 cursor-pointer bg-card active:bg-accent/50 transition-colors"
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        mass: 0.5,
       }}
     >
-      <h3>{category.name}</h3>
-    </div>
+      <h3 className="font-semibold text-lg">{category.name}</h3>
+    </motion.div>
   );
 }

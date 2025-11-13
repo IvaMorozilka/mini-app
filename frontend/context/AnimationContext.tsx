@@ -1,12 +1,13 @@
 'use client';
 
-import { createContext, useState, useContext } from 'react';
+import { createContext, useState, useContext, useRef } from 'react';
 
 // Типы для нашего контекста
 type AnimationDirection = 'forward' | 'backward' | 'none';
 interface AnimationContextProps {
   direction: AnimationDirection;
   setDirection: (direction: AnimationDirection) => void;
+  resetDirection: () => void;
 }
 
 // Создаем контекст с начальным значением undefined
@@ -14,10 +15,23 @@ const AnimationContext = createContext<AnimationContextProps | undefined>(undefi
 
 // Создаем провайдер, который будет хранить состояние
 export function AnimationProvider({ children }: { children: React.ReactNode }) {
-  const [direction, setDirection] = useState<AnimationDirection>('none');
+  const [direction, setDirectionState] = useState<AnimationDirection>('none');
+  const directionRef = useRef<AnimationDirection>('none');
+
+  // Обновляем и ref, и state
+  const setDirection = (newDirection: AnimationDirection) => {
+    directionRef.current = newDirection;
+    setDirectionState(newDirection);
+  };
+
+  // Функция для сброса направления (вызывается после завершения анимации)
+  const resetDirection = () => {
+    directionRef.current = 'none';
+    setDirectionState('none');
+  };
 
   return (
-    <AnimationContext.Provider value={{ direction, setDirection }}>
+    <AnimationContext.Provider value={{ direction, setDirection, resetDirection }}>
       {children}
     </AnimationContext.Provider>
   );
