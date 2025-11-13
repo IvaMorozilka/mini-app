@@ -187,12 +187,21 @@ export const getServicesGroupedByCategory = (
 // Generate a unique slug for a service based on its name and other fields
 export const getServiceSlug = (service: Service): string => {
   // Create a slug from service name, making it URL-safe
-  const slug = service.наименование_услуги
+  let slug = service.наименование_услуги
     .toLowerCase()
     .replace(/[^a-zа-яё0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .trim();
+  
+  // Truncate slug to max 50 characters to avoid filesystem path length issues
+  // The hash ensures uniqueness even with truncated slugs
+  const MAX_SLUG_LENGTH = 50;
+  if (slug.length > MAX_SLUG_LENGTH) {
+    slug = slug.substring(0, MAX_SLUG_LENGTH);
+    // Remove trailing dash if truncation happened in the middle of a word
+    slug = slug.replace(/-+$/, '');
+  }
   
   // Create a hash from multiple fields to ensure uniqueness
   const hashString = `${service.наименование_услуги}|${service.направление_поддержки}|${service.описание_услуги.substring(0, 100)}`;
