@@ -45,7 +45,7 @@ export default function MainLayout({
 
   // Оптимизированная spring transition для мобильных устройств
   const springTransition = {
-    type: 'spring',
+    type: 'spring' as const,
     stiffness: 400,
     damping: 35,
     mass: 0.6,
@@ -53,8 +53,8 @@ export default function MainLayout({
 
   // Быстрый tween transition для мгновенных переходов
   const tweenTransition = {
-    type: 'tween',
-    ease: [0.25, 0.1, 0.25, 1], // Оптимизированная кривая для мобильных
+    type: 'tween' as const,
+    ease: [0.25, 0.1, 0.25, 1] as const, // Оптимизированная кривая для мобильных
     duration: 0.2,
   };
 
@@ -108,7 +108,7 @@ export default function MainLayout({
                 ? 'forwardExit'
                 : currentDirection === 'backward'
                 ? 'backwardExit'
-                : false
+                : undefined
             }
             transition={shouldAnimate ? springTransition : tweenTransition}
             onAnimationComplete={(definition) => {
