@@ -86,7 +86,7 @@ export default function MultiSelectFilter({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-2" align="start">
-        <div className="space-y-2 max-h-[300px] overflow-y-auto">
+        <div className="scroll-area space-y-2 max-h-[300px] overflow-y-auto">
           {options.map((option) => (
             <div
               key={option.id}

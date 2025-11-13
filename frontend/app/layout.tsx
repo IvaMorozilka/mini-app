@@ -1,5 +1,16 @@
 import './globals.css';
 import { Providers } from './providers';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+    viewportFit: 'cover', // For iOS safe areas
+  },
+};
 
 export default function RootLayout({
   children,
@@ -8,6 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

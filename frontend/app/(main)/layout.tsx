@@ -81,13 +81,13 @@ export default function MainLayout({
   };
 
   return (
-    <div className="mx-auto flex min-h-screen max-w-lg flex-col bg-background shadow-lg">
+    <div className="mx-auto flex h-[100dvh] max-w-lg flex-col bg-background shadow-lg safe-area-inset">
       {/* Сцена для анимаций */}
       <div className="relative flex-1 overflow-hidden">
         <AnimatePresence mode="wait" initial={false}>
           <motion.main
             key={pathname}
-            className="absolute h-full w-full overflow-y-auto p-4"
+            className="scroll-area absolute h-full w-full overflow-y-auto overflow-x-hidden p-4"
             variants={variants}
             initial={
               currentDirection === 'forward'
