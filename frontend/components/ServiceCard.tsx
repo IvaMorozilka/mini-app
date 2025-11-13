@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useAnimation } from '@/context/AnimationContext';
 import { ArrowRight } from 'lucide-react';
 import { Service, getServiceSlug } from '@/lib/services';
@@ -24,12 +25,26 @@ export default function ServiceCard({ service, showPopular = false }: ServiceCar
   const serviceType = service.тип_услуги === 'Региональная' ? 'Р' : 'Ф';
 
   return (
-    <div 
-      className="flex items-center justify-between p-3 rounded-md cursor-pointer hover:bg-accent/50 transition-colors border border-transparent hover:border-border relative bg-muted/30"
+    <motion.div
+      className="flex items-center justify-between p-3 rounded-md cursor-pointer active:bg-accent/50 transition-colors border border-transparent relative bg-muted/30"
       onClick={handleClick}
+      whileTap={{ scale: 0.98 }}
+      initial={{ opacity: 0, x: -5 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        mass: 0.5,
+      }}
     >
       {showPopular && (
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-1 h-8 bg-primary rounded-r-full" />
+        <motion.div
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-1 h-8 bg-primary rounded-r-full"
+          initial={{ scaleY: 0 }}
+          animate={{ scaleY: 1 }}
+          transition={{ delay: 0.1, duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+        />
       )}
       <div className="flex items-center gap-3 flex-1 min-w-0">
         {/* Service type indicator */}
@@ -46,7 +61,7 @@ export default function ServiceCard({ service, showPopular = false }: ServiceCar
         </div>
       </div>
       <ArrowRight className="size-5 text-muted-foreground shrink-0 ml-3" />
-    </div>
+    </motion.div>
   );
 }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useAnimation } from '@/context/AnimationContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,32 @@ type CategorySectionProps = {
   category: ServiceCategory;
   services: Service[];
   initialShowCount?: number;
+};
+
+// Оптимизированные варианты для мобильных
+const servicesContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.03,
+      delayChildren: 0.02,
+    },
+  },
+};
+
+const serviceItemVariants = {
+  hidden: { opacity: 0, x: -5 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 400,
+      damping: 30,
+      mass: 0.5,
+    },
+  },
 };
 
 export default function CategorySection({ 
@@ -39,47 +66,81 @@ export default function CategorySection({
   };
 
   return (
-    <Card className="mb-6 bg-background border shadow-sm">
-      <CardHeader 
-        className="cursor-pointer hover:bg-muted/50 transition-colors border-b bg-muted/20"
-        onClick={handleCategoryClick}
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <CardTitle className="text-lg font-semibold">
-                {category.name}
-              </CardTitle>
-              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium shrink-0">
-                {category.serviceCount} {category.serviceCount === 1 ? 'услуга' : category.serviceCount < 5 ? 'услуги' : 'услуг'}
-              </span>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        type: 'spring',
+        stiffness: 400,
+        damping: 30,
+        mass: 0.5,
+      }}
+    >
+      <Card className="mb-6 bg-background border shadow-sm overflow-hidden">
+        <CardHeader 
+          className="cursor-pointer active:bg-muted/50 transition-colors border-b bg-muted/20"
+          onClick={handleCategoryClick}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <CardTitle className="text-lg font-semibold">
+                  {category.name}
+                </CardTitle>
+                <motion.span
+                  className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium shrink-0"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 25 }}
+                >
+                  {category.serviceCount} {category.serviceCount === 1 ? 'услуга' : category.serviceCount < 5 ? 'услуги' : 'услуг'}
+                </motion.span>
+              </div>
+              <CardDescription className="text-sm">
+                {category.description}
+              </CardDescription>
             </div>
-            <CardDescription className="text-sm">
-              {category.description}
-            </CardDescription>
+            <ArrowRight className="size-5 text-muted-foreground shrink-0" />
           </div>
-          <ArrowRight className="size-5 text-muted-foreground shrink-0" />
-        </div>
-      </CardHeader>
+        </CardHeader>
 
-      <CardContent className="pt-6 bg-muted/10">
-        <div className="space-y-3">
-          {displayedServices.map((service, index) => (
-            <ServiceCard key={index} service={service} showPopular={index < 2} />
-          ))}
-        </div>
-
-        {hasMore && (
-          <Button
-            variant="ghost"
-            className="w-full mt-4"
-            onClick={handleShowMore}
+        <CardContent className="pt-6 bg-muted/10">
+          <motion.div
+            className="space-y-3"
+            variants={servicesContainerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            Показать ещё
-          </Button>
-        )}
-      </CardContent>
-    </Card>
+            {displayedServices.map((service, index) => (
+              <motion.div key={index} variants={serviceItemVariants}>
+                <ServiceCard service={service} showPopular={index < 2} />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {hasMore && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.15 }}
+            >
+              <Button
+                variant="ghost"
+                className="w-full mt-4"
+                onClick={handleShowMore}
+                asChild
+              >
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Показать ещё
+                </motion.button>
+              </Button>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
