@@ -1,13 +1,14 @@
 import type { NextConfig } from "next";
 
+const basePath = process.env.BASE_PATH || '';
+
 const nextConfig: NextConfig = {
   output: 'export',
+  basePath: basePath,
+  assetPrefix: basePath,
   images: {
     unoptimized: true,
   },
-  // Uncomment and update if your repository name is not the root
-  // basePath: '/mini-app-svo',
-  // assetPrefix: '/mini-app-svo',
   trailingSlash: false,
 };
 

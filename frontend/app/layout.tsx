@@ -3,12 +3,14 @@ import { Providers } from './providers';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  title: 'Мини-приложение СВО',
+  description: 'Социальные меры поддержки участников СВО и их семей',
   viewport: {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
     userScalable: false,
-    viewportFit: 'cover', // For iOS safe areas
+    viewportFit: 'cover',
   },
 };
 
