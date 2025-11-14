@@ -180,6 +180,17 @@ export default function CategoryPageClient() {
             />
           </div>
 
+          {/* Multi-select Filter */}
+          <div className="flex gap-2">
+            <MultiSelectFilter
+              options={citizenCategories}
+              selected={selectedCitizenCategories}
+              onSelectionChange={setSelectedCitizenCategories}
+              placeholder="Категория граждан"
+              className="flex-1"
+            />
+          </div>
+
           {/* Service Type Filter Buttons */}
           <div className="flex gap-2 flex-wrap">
             <Button
@@ -206,17 +217,6 @@ export default function CategoryPageClient() {
             >
               Только федеральные
             </Button>
-          </div>
-
-          {/* Multi-select Filter */}
-          <div className="flex gap-2">
-            <MultiSelectFilter
-              options={citizenCategories}
-              selected={selectedCitizenCategories}
-              onSelectionChange={setSelectedCitizenCategories}
-              placeholder="Категория граждан"
-              className="flex-1"
-            />
           </div>
         </div>
       </motion.div>
