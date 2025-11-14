@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAnimation } from '@/context/AnimationContext';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Service, ServiceCategory, sortServices } from '@/lib/services';
 import ServiceCard from './ServiceCard';
@@ -95,9 +95,6 @@ export default function CategorySection({
                   {category.serviceCount} {category.serviceCount === 1 ? 'услуга' : category.serviceCount < 5 ? 'услуги' : 'услуг'}
                 </motion.span>
               </div>
-              <CardDescription className="text-sm">
-                {category.description}
-              </CardDescription>
             </div>
           </div>
         </CardHeader>

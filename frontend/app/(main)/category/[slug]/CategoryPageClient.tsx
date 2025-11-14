@@ -151,37 +151,36 @@ export default function CategoryPageClient() {
     <>
       {/* Sticky Header and Search Block */}
       <motion.div
-        className="sticky top-[-12px] z-20 -mx-3 -mt-3 pt-3 bg-background/95 backdrop-blur-sm border-b border-border/50"
+        className="sticky top-[-12px] z-20 -mx-3 -mt-3 pt-2 bg-background/95 backdrop-blur-sm border-b border-border/50"
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] as const }}
       >
         <Header 
           title={category.name} 
-          subtitle={category.description}
           showBackButton={true}
           rightSide={
-            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium whitespace-nowrap">
+            <span className="text-[10px] sm:text-xs bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-medium whitespace-nowrap">
               {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
             </span>
           }
         />
         {/* Search Input and Filter */}
-        <div className="px-3 pt-2 pb-2 space-y-2">
+        <div className="px-3 pt-1 pb-1.5 space-y-1.5">
           {/* Search Input */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Поиск..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              className="pl-8 h-8 text-sm"
             />
           </div>
 
           {/* Multi-select Filter */}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5">
             <MultiSelectFilter
               options={citizenCategories}
               selected={selectedCitizenCategories}
@@ -192,12 +191,12 @@ export default function CategoryPageClient() {
           </div>
 
           {/* Service Type Filter Buttons */}
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-1.5 flex-wrap">
             <Button
               variant={serviceTypeFilter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setServiceTypeFilter('all')}
-              className="text-xs"
+              className="text-[11px] h-7 px-2"
             >
               Все
             </Button>
@@ -205,23 +204,23 @@ export default function CategoryPageClient() {
               variant={serviceTypeFilter === 'regional' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setServiceTypeFilter('regional')}
-              className="text-xs"
+              className="text-[11px] h-7 px-2"
             >
-              Только региональные
+              Регион.
             </Button>
             <Button
               variant={serviceTypeFilter === 'federal' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setServiceTypeFilter('federal')}
-              className="text-xs"
+              className="text-[11px] h-7 px-2"
             >
-              Только федеральные
+              Федер.
             </Button>
           </div>
         </div>
       </motion.div>
       
-      <div className="space-y-4 pt-4">
+      <div className="space-y-4 pt-2">
 
         {/* Services List */}
         <motion.div

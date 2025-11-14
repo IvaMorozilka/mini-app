@@ -85,18 +85,19 @@ export default function MultiSelectFilter({
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-2" align="start">
-        <div className="scroll-area space-y-2 max-h-[300px] overflow-y-auto">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-1" align="start">
+        <div className="scroll-area space-y-0.5 max-h-[300px] overflow-y-auto">
           {options.map((option) => (
             <div
               key={option.id}
-              className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent cursor-pointer"
+              className="flex items-center space-x-2 p-1.5 rounded-md hover:bg-accent cursor-pointer min-h-[44px]"
               onClick={() => handleToggle(option.id)}
             >
               <Checkbox
                 id={option.id}
                 checked={selected.includes(option.id)}
                 onCheckedChange={() => handleToggle(option.id)}
+                className="size-5"
               />
               <label
                 htmlFor={option.id}

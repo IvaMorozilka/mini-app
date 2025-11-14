@@ -22,27 +22,27 @@ export default function Header({ title, subtitle, showBackButton = false, rightS
     };
 
     return (
-        <header className='flex flex-col gap-1 pb-4 pt-3 px-3'>
+        <header className='flex flex-col gap-0.5 pb-2 pt-2 px-3'>
             {showBackButton && (
                 <Button 
                     onClick={handleBack} 
                     variant={'outline'} 
-                    size="default"
-                    className="self-start mb-2 h-10 px-4 font-medium"
+                    size="sm"
+                    className="self-start mb-1 h-8 px-3 text-xs font-medium"
                 >
-                    <ArrowLeft className="size-4 mr-2"/>
+                    <ArrowLeft className="size-4 mr-1.5 shrink-0"/>
                     Назад
                 </Button>
             )}
             <div className="flex items-start justify-between gap-2">
-                <div className="flex flex-col gap-1 flex-1 min-w-0">
-                    <h1 className='text-left font-bold text-2xl leading-tight'>{title}</h1>
-                    {subtitle && (
-                        <p className='text-sm text-muted-foreground leading-tight'>{subtitle}</p>
+                <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                    <h1 className='text-left font-bold text-lg sm:text-xl leading-tight'>{title}</h1>
+                    {subtitle && !showBackButton && (
+                        <p className='text-xs sm:text-sm text-muted-foreground leading-tight'>{subtitle}</p>
                     )}
                 </div>
                 {rightSide && (
-                    <div className="flex-shrink-0 pt-1">
+                    <div className="flex-shrink-0">
                         {rightSide}
                     </div>
                 )}
