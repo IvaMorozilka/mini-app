@@ -79,7 +79,9 @@ export default function HomePage() {
 
   return (
     <>
+      {/* Sticky Header and Search Block */}
       <motion.div
+        className="sticky top-0 z-20 -mx-3 bg-background/95 backdrop-blur-sm border-b border-border/50"
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
@@ -88,16 +90,8 @@ export default function HomePage() {
           title={searchQuery.trim() ? `Результаты поиска: "${searchQuery}"` : "Разделы"}
           subtitle={searchQuery.trim() ? `Найдено услуг: ${searchedServices.length}` : "Социальные меры поддержки участников СВО и их семей в Ленинградской области"}
         />
-      </motion.div>
-
-      <div className="space-y-4">
         {/* Search Bar */}
-        <motion.div
-          className="sticky top-[85px] z-10 -mx-3 px-3 pt-2 pb-2 bg-background/95 backdrop-blur-sm"
-          initial={{ opacity: 0, y: -5 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, delay: 0.05, ease: [0.25, 0.1, 0.25, 1] }}
-        >
+        <div className="px-3 pt-2 pb-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
@@ -108,7 +102,10 @@ export default function HomePage() {
               className="pl-9"
             />
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
+
+      <div className="space-y-4">
 
         {/* Show search results or categories */}
         {searchQuery.trim() ? (

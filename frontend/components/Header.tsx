@@ -21,7 +21,7 @@ export default function Header({ title, subtitle, showBackButton = false }: Head
     };
 
     return (
-        <header className='sticky top-0 z-20 flex flex-col gap-1 pb-4 pt-3 -mt-3 -mx-3 px-3 bg-background/95 backdrop-blur-sm border-b border-border/50'>
+        <header className='flex flex-col gap-1 pb-4 pt-3 -mt-3 px-3'>
             {showBackButton && (
                 <Button onClick={handleBack} variant={'ghost'} size="icon" className="self-start mb-1">
                     <ArrowLeft className="size-5"/>
