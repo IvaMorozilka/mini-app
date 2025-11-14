@@ -18,6 +18,7 @@ import {
 import ServiceCard from '@/components/ServiceCard';
 import MultiSelectFilter from '@/components/MultiSelectFilter';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 
 // Оптимизированные варианты для мобильных
@@ -52,23 +53,40 @@ export default function CategoryPageClient() {
   const [allServices, setAllServices] = useState<Service[]>([]);
   const [selectedCitizenCategories, setSelectedCitizenCategories] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [serviceTypeFilter, setServiceTypeFilter] = useState<'all' | 'regional' | 'federal'>('all');
   const [loading, setLoading] = useState(true);
 
   const citizenCategories = getCitizenCategories().filter(cat => cat.id !== 'all');
 
-  // Filter and sort services based on citizen category and search query
+  // Filter and sort services based on citizen category, service type, and search query
   const filteredServices = useMemo(() => {
     let services = allServices;
-    if (selectedCitizenCategories.length > 0) {
-      services = filterServices(allServices, undefined, selectedCitizenCategories);
+    
+    // Filter by service type
+    if (serviceTypeFilter !== 'all') {
+      services = services.filter(service => {
+        if (serviceTypeFilter === 'regional') {
+          return service.тип_услуги === 'Региональная';
+        } else if (serviceTypeFilter === 'federal') {
+          return service.тип_услуги === 'Федеральная';
+        }
+        return true;
+      });
     }
+    
+    // Filter by citizen category
+    if (selectedCitizenCategories.length > 0) {
+      services = filterServices(services, undefined, selectedCitizenCategories);
+    }
+    
     // Apply search filter
     if (searchQuery.trim()) {
       services = searchServices(services, searchQuery);
     }
+    
     // Sort: regional before federal
     return sortServices(services);
-  }, [allServices, selectedCitizenCategories, searchQuery]);
+  }, [allServices, selectedCitizenCategories, searchQuery, serviceTypeFilter]);
 
   useEffect(() => {
     const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
@@ -141,7 +159,12 @@ export default function CategoryPageClient() {
         <Header 
           title={category.name} 
           subtitle={category.description}
-          showBackButton={true} 
+          showBackButton={true}
+          rightSide={
+            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium whitespace-nowrap">
+              {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
+            </span>
+          }
         />
         {/* Search Input and Filter */}
         <div className="px-3 pt-2 pb-2 space-y-2">
@@ -155,6 +178,34 @@ export default function CategoryPageClient() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
             />
+          </div>
+
+          {/* Service Type Filter Buttons */}
+          <div className="flex gap-2 flex-wrap">
+            <Button
+              variant={serviceTypeFilter === 'all' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setServiceTypeFilter('all')}
+              className="text-xs"
+            >
+              Все
+            </Button>
+            <Button
+              variant={serviceTypeFilter === 'regional' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setServiceTypeFilter('regional')}
+              className="text-xs"
+            >
+              Только региональные
+            </Button>
+            <Button
+              variant={serviceTypeFilter === 'federal' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setServiceTypeFilter('federal')}
+              className="text-xs"
+            >
+              Только федеральные
+            </Button>
           </div>
 
           {/* Multi-select Filter */}
@@ -171,18 +222,6 @@ export default function CategoryPageClient() {
       </motion.div>
       
       <div className="space-y-4 pt-4">
-
-        {/* Category Badge */}
-        <motion.div
-          className="flex items-center gap-2 -mx-3 px-3"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2, delay: 0.08, type: 'spring' as const, stiffness: 400, damping: 25 }}
-        >
-          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
-            {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
-          </span>
-        </motion.div>
 
         {/* Services List */}
         <motion.div
