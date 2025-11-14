@@ -81,7 +81,7 @@ export default function HomePage() {
     <>
       {/* Sticky Header and Search Block */}
       <motion.div
-        className="sticky top-0 z-20 -mx-3 bg-background/95 backdrop-blur-sm border-b border-border/50"
+        className="sticky top-[-12px] z-20 -mx-3 -mt-3 pt-3 bg-background/95 backdrop-blur-sm border-b border-border/50"
         initial={{ opacity: 0, y: -5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
@@ -105,7 +105,7 @@ export default function HomePage() {
         </div>
       </motion.div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 pt-4">
 
         {/* Show search results or categories */}
         {searchQuery.trim() ? (
