@@ -1,9 +1,8 @@
 import { getServiceCategories } from '@/lib/services';
 import CategoryPageClient from './CategoryPageClient';
 
-// Only restrict dynamic params when doing static export
-// In dynamic mode, allow runtime params for development
-export const dynamicParams = process.env.STATIC_EXPORT === 'true' ? false : true;
+// dynamicParams defaults to true (allows dynamic params in development)
+// For static export, it will be set to false by CI/CD build script
 
 export async function generateStaticParams() {
   try {

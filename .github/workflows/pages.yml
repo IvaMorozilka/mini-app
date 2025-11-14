@@ -33,6 +33,18 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
+      - name: Configure for static export
+        working-directory: ./frontend
+        run: |
+          # Add dynamicParams = false for static export
+          # This ensures all routes are pre-generated at build time
+          CATEGORY_PAGE="app/(main)/category/[slug]/page.tsx"
+          SERVICE_PAGE="app/(main)/service/[slug]/page.tsx"
+          # Insert dynamicParams export before generateStaticParams for both pages
+          sed -i '/^export async function generateStaticParams/i export const dynamicParams = false;\n' "$CATEGORY_PAGE"
+          sed -i '/^export async function generateStaticParams/i export const dynamicParams = false;\n' "$SERVICE_PAGE"
+          echo "Configured pages for static export"
+
       - name: Build static site
         working-directory: ./frontend
         env:
