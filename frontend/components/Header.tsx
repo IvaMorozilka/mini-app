@@ -24,8 +24,14 @@ export default function Header({ title, subtitle, showBackButton = false, rightS
     return (
         <header className='flex flex-col gap-1 pb-4 pt-3 px-3'>
             {showBackButton && (
-                <Button onClick={handleBack} variant={'ghost'} size="icon" className="self-start mb-1">
-                    <ArrowLeft className="size-5"/>
+                <Button 
+                    onClick={handleBack} 
+                    variant={'outline'} 
+                    size="default"
+                    className="self-start mb-2 h-10 px-4 font-medium"
+                >
+                    <ArrowLeft className="size-4 mr-2"/>
+                    Назад
                 </Button>
             )}
             <div className="flex items-start justify-between gap-2">
