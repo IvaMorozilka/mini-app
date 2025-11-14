@@ -150,7 +150,7 @@ export const filterServices = (
   return sortServices(filtered);
 };
 
-// Search services by name or description
+// Search services by name, description, or category
 export const searchServices = (
   services: Service[],
   searchQuery: string
@@ -160,10 +160,33 @@ export const searchServices = (
   }
 
   const query = searchQuery.toLowerCase();
+  const allCategories = getServiceCategories();
+  
   return services.filter(
-    (service) =>
-      service.наименование_услуги.toLowerCase().includes(query) ||
-      service.описание_услуги.toLowerCase().includes(query)
+    (service) => {
+      // Search in service name
+      if (service.наименование_услуги.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      // Search in service description
+      if (service.описание_услуги.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      // Search in category name (направление_поддержки)
+      if (service.направление_поддержки.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      // Search in category description
+      const category = allCategories.find(cat => cat.name === service.направление_поддержки);
+      if (category && category.description.toLowerCase().includes(query)) {
+        return true;
+      }
+      
+      return false;
+    }
   );
 };
 

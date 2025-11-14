@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Service, ServiceCategory, sortServices } from '@/lib/services';
 import ServiceCard from './ServiceCard';
-import { ArrowRight } from 'lucide-react';
 
 type CategorySectionProps = {
   category: ServiceCategory;
@@ -76,9 +75,9 @@ export default function CategorySection({
         mass: 0.5,
       }}
     >
-      <Card className="mb-6 bg-background border shadow-sm overflow-hidden">
+      <Card className="mb-4 bg-card border-2 shadow-md overflow-hidden gap-0 py-0">
         <CardHeader 
-          className="cursor-pointer active:bg-muted/50 transition-colors border-b bg-muted/20"
+          className="cursor-pointer active:bg-muted/50 transition-colors border-b-2 bg-muted/30 py-3 px-4"
           onClick={handleCategoryClick}
         >
           <div className="flex items-start justify-between gap-3">
@@ -100,13 +99,12 @@ export default function CategorySection({
                 {category.description}
               </CardDescription>
             </div>
-            <ArrowRight className="size-5 text-muted-foreground shrink-0" />
           </div>
         </CardHeader>
 
-        <CardContent className="pt-6 bg-muted/10">
+        <CardContent className="pt-3 pb-3 px-4 bg-muted/20">
           <motion.div
-            className="space-y-3"
+            className="space-y-2"
             variants={servicesContainerVariants}
             initial="hidden"
             animate="visible"

@@ -5,35 +5,8 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import { getServiceBySlug, getAllServices, type Service } from '@/lib/services';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, FileText, Info, CheckCircle, ExternalLink } from 'lucide-react';
-
-// Оптимизированные варианты для мобильных
-const cardVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: 'spring' as const,
-      stiffness: 400,
-      damping: 30,
-      mass: 0.5,
-    },
-  },
-};
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.04,
-      delayChildren: 0.05,
-    },
-  },
-};
+import { Clock, FileText, CheckCircle, ExternalLink } from 'lucide-react';
 
 export default function ServicePageClient() {
   const params = useParams();
@@ -105,158 +78,98 @@ export default function ServicePageClient() {
       </motion.div>
       
       <motion.div
-        className="space-y-6"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
+        className="space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
       >
-        {/* Main Info Card */}
-        <motion.div variants={cardVariants}>
-          <Card>
-            <CardHeader>
-              <div className="flex items-start gap-3">
-                <motion.div
-                  className="size-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.1, type: 'spring' as const, stiffness: 400, damping: 25 }}
-                >
-                  <span className="text-primary font-bold text-lg">Φ</span>
-                </motion.div>
-                <div className="flex-1 min-w-0">
-                  <CardTitle className="text-lg font-semibold mb-2">
-                    {service.наименование_услуги}
-                  </CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    {service.описание_услуги}
-                  </p>
-                </div>
-              </div>
-            </CardHeader>
-          </Card>
+        {/* Service Type Indicator */}
+        <motion.div
+          className="flex items-center gap-2.5 mb-3"
+          initial={{ opacity: 0, x: -5 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center shrink-0">
+            <span className="text-primary font-bold text-xs">
+              {service.тип_услуги === 'Региональная' ? 'Р' : 'Ф'}
+            </span>
+          </div>
+          <span className="text-sm text-muted-foreground">{service.тип_услуги}</span>
         </motion.div>
 
-        {/* Service Details */}
-        <div className="space-y-4">
-          {/* Service Delivery Time */}
-          {service.срок_оказания_услуги && (
-            <motion.div variants={cardVariants}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.15, type: 'spring' as const, stiffness: 400, damping: 25 }}
-                    >
-                      <Clock className="size-5 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-base font-semibold">
-                      Срок оказания услуги
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{service.срок_оказания_услуги}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+        {/* Description */}
+        {service.описание_услуги && (
+          <motion.p
+            className="text-sm text-foreground leading-relaxed"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+          >
+            {service.описание_услуги}
+          </motion.p>
+        )}
 
-          {/* Documents */}
-          {service.категория_граждан && (
-            <motion.div variants={cardVariants}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.18, type: 'spring' as const, stiffness: 400, damping: 25 }}
-                    >
-                      <FileText className="size-5 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-base font-semibold">
-                      Категория граждан
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {service.категория_граждан.split(';').map((category, index) => (
-                      <motion.p
-                        key={index}
-                        className="text-sm"
-                        initial={{ opacity: 0, x: -5 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 + index * 0.03 }}
-                      >
-                        • {category.trim()}
-                      </motion.p>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+        {/* Service Delivery Time */}
+        {service.срок_оказания_услуги && (
+          <motion.div
+            className="pt-3 border-t border-border/50"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="flex items-start gap-2.5 mb-2">
+              <Clock className="size-4 text-primary mt-0.5 shrink-0" />
+              <h3 className="text-sm font-semibold">Срок оказания услуги</h3>
+            </div>
+            <p className="text-sm text-foreground ml-7">{service.срок_оказания_услуги}</p>
+          </motion.div>
+        )}
 
-          {/* Service Type */}
-          {service.тип_услуги && (
-            <motion.div variants={cardVariants}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: 'spring' as const, stiffness: 400, damping: 25 }}
-                    >
-                      <Info className="size-5 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-base font-semibold">
-                      Тип услуги
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{service.тип_услуги}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
+        {/* Category of Citizens */}
+        {service.категория_граждан && (
+          <motion.div
+            className="pt-3 border-t border-border/50"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+          >
+            <div className="flex items-start gap-2.5 mb-2">
+              <FileText className="size-4 text-primary mt-0.5 shrink-0" />
+              <h3 className="text-sm font-semibold">Категория граждан</h3>
+            </div>
+            <div className="space-y-1.5 ml-7">
+              {service.категория_граждан.split(';').map((category, index) => (
+                <p key={index} className="text-sm text-foreground">
+                  • {category.trim()}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
-          {/* Result */}
-          {service.результат_оказания_услуги && (
-            <motion.div variants={cardVariants}>
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center gap-3">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.22, type: 'spring' as const, stiffness: 400, damping: 25 }}
-                    >
-                      <CheckCircle className="size-5 text-primary" />
-                    </motion.div>
-                    <CardTitle className="text-base font-semibold">
-                      Результат
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm">{service.результат_оказания_услуги}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          )}
-        </div>
+        {/* Result */}
+        {service.результат_оказания_услуги && (
+          <motion.div
+            className="pt-3 border-t border-border/50"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <div className="flex items-start gap-2.5 mb-2">
+              <CheckCircle className="size-4 text-primary mt-0.5 shrink-0" />
+              <h3 className="text-sm font-semibold">Результат</h3>
+            </div>
+            <p className="text-sm text-foreground ml-7">{service.результат_оказания_услуги}</p>
+          </motion.div>
+        )}
 
         {/* Action Buttons */}
         <motion.div
-          className="space-y-3"
+          className="space-y-3 pt-4 border-t border-border/50"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, type: 'spring' as const, stiffness: 400, damping: 30, mass: 0.5 }}
+          transition={{ delay: 0.35, type: 'spring' as const, stiffness: 400, damping: 30, mass: 0.5 }}
         >
           {service.ссылка_на_получение_услуги && (
             <Button

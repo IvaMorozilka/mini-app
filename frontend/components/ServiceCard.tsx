@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAnimation } from '@/context/AnimationContext';
-import { ArrowRight } from 'lucide-react';
 import { Service, getServiceSlug } from '@/lib/services';
 
 type ServiceCardProps = {
@@ -26,7 +25,7 @@ export default function ServiceCard({ service, showPopular = false }: ServiceCar
 
   return (
     <motion.div
-      className="flex items-center justify-between p-3 rounded-md cursor-pointer active:bg-accent/50 transition-colors border border-transparent relative bg-muted/30"
+      className="flex items-center p-2.5 rounded-md cursor-pointer active:bg-accent/50 transition-colors border border-border/50 relative bg-muted/60"
       onClick={handleClick}
       whileTap={{ scale: 0.98 }}
       initial={{ opacity: 0, x: -5 }}
@@ -46,21 +45,17 @@ export default function ServiceCard({ service, showPopular = false }: ServiceCar
           transition={{ delay: 0.1, duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         />
       )}
-      <div className="flex items-center gap-3 flex-1 min-w-0">
+      <div className="flex items-center gap-2.5 flex-1 min-w-0">
         {/* Service type indicator */}
-        <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center shrink-0">
-          <span className="text-primary font-bold text-sm">{serviceType}</span>
+        <div className="w-7 h-7 rounded bg-primary/10 flex items-center justify-center shrink-0">
+          <span className="text-primary font-bold text-xs">{serviceType}</span>
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-base mb-1 line-clamp-1">
+          <h3 className="font-medium text-sm leading-tight">
             {service.наименование_услуги}
           </h3>
-          <p className="text-sm text-muted-foreground line-clamp-2">
-            {service.описание_услуги}
-          </p>
         </div>
       </div>
-      <ArrowRight className="size-5 text-muted-foreground shrink-0 ml-3" />
     </motion.div>
   );
 }

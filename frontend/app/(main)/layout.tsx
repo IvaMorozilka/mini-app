@@ -87,7 +87,7 @@ export default function MainLayout({
         <AnimatePresence mode="wait" initial={false}>
           <motion.main
             key={pathname}
-            className="scroll-area absolute h-full w-full overflow-y-auto overflow-x-hidden p-4"
+            className="scroll-area absolute h-full w-full overflow-y-auto overflow-x-hidden p-3 bg-background"
             variants={variants}
             initial={
               currentDirection === 'forward'

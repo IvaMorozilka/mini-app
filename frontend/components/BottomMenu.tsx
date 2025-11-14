@@ -59,7 +59,16 @@ export default function BottomMenu() {
                 active && "text-primary"
               )}
             >
-              <Link href={item.path} onClick={() => setDirection('none')}>
+              <Link 
+                href={item.path} 
+                onClick={(e) => {
+                  if (active) {
+                    e.preventDefault();
+                    return;
+                  }
+                  setDirection('none');
+                }}
+              >
                 {active && (
                   <motion.div
                     className="absolute inset-0 bg-primary/10 rounded-md"

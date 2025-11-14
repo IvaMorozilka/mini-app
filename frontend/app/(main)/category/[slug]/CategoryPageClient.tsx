@@ -136,37 +136,40 @@ export default function CategoryPageClient() {
       </motion.div>
       
       <div className="space-y-4">
-        {/* Multi-select Filter */}
+        {/* Sticky Filter and Badge */}
         <motion.div
-          className="flex gap-2"
+          className="sticky top-[85px] z-10 -mx-3 px-3 pt-2 pb-2 bg-background/95 backdrop-blur-sm space-y-3"
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.05, ease: [0.25, 0.1, 0.25, 1] as const }}
         >
-          <MultiSelectFilter
-            options={citizenCategories}
-            selected={selectedCitizenCategories}
-            onSelectionChange={setSelectedCitizenCategories}
-            placeholder="Категория граждан"
-            className="flex-1"
-          />
-        </motion.div>
+          {/* Multi-select Filter */}
+          <div className="flex gap-2">
+            <MultiSelectFilter
+              options={citizenCategories}
+              selected={selectedCitizenCategories}
+              onSelectionChange={setSelectedCitizenCategories}
+              placeholder="Категория граждан"
+              className="flex-1"
+            />
+          </div>
 
-        {/* Category Badge */}
-        <motion.div
-          className="flex items-center gap-2"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.2, delay: 0.08, type: 'spring' as const, stiffness: 400, damping: 25 }}
-        >
-          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
-            {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
-          </span>
+          {/* Category Badge */}
+          <motion.div
+            className="flex items-center gap-2"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.2, delay: 0.08, type: 'spring' as const, stiffness: 400, damping: 25 }}
+          >
+            <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full font-medium">
+              {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
+            </span>
+          </motion.div>
         </motion.div>
 
         {/* Services List */}
         <motion.div
-          className="space-y-3"
+          className="space-y-2"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
