@@ -1,7 +1,9 @@
 import { getServiceCategories } from '@/lib/services';
 import CategoryPageClient from './CategoryPageClient';
 
-export const dynamicParams = false;
+// Only restrict dynamic params when doing static export
+// In dynamic mode, allow runtime params for development
+export const dynamicParams = process.env.STATIC_EXPORT === 'true' ? false : true;
 
 export async function generateStaticParams() {
   try {
