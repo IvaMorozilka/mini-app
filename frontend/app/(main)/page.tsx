@@ -14,6 +14,7 @@ import {
   type Service,
 } from '@/lib/services';
 import { Search } from 'lucide-react';
+import { getServiceCountText } from '@/lib/utils';
 
 // Оптимизированные варианты для мобильных (быстрее и плавнее)
 const containerVariants = {
@@ -88,7 +89,7 @@ export default function HomePage() {
       >
         <Header
           title={searchQuery.trim() ? `Результаты поиска: "${searchQuery}"` : "Разделы"}
-          subtitle={searchQuery.trim() ? `Найдено услуг: ${searchedServices.length}` : "Социальные меры поддержки участников СВО и их семей в Ленинградской области"}
+          subtitle={searchQuery.trim() ? `Найдено ${getServiceCountText(searchedServices.length).toLowerCase()}` : "Социальные меры поддержки участников СВО и их семей в Ленинградской области"}
         />
         {/* Search Bar */}
         <div className="px-3 pt-2 pb-2">

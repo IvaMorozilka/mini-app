@@ -6,6 +6,7 @@ import { useAnimation } from '@/context/AnimationContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Service, ServiceCategory, sortServices } from '@/lib/services';
+import { getServiceCountText } from '@/lib/utils';
 import ServiceCard from './ServiceCard';
 
 type CategorySectionProps = {
@@ -43,7 +44,7 @@ const serviceItemVariants = {
 export default function CategorySection({ 
   category, 
   services, 
-  initialShowCount = 2 
+  initialShowCount = 3 
 }: CategorySectionProps) {
   const router = useRouter();
   const { setDirection } = useAnimation();
@@ -77,25 +78,21 @@ export default function CategorySection({
     >
       <Card className="mb-4 bg-card border-2 shadow-md overflow-hidden gap-0 py-0">
         <CardHeader 
-          className="cursor-pointer active:bg-muted/50 transition-colors border-b-2 bg-muted/30 py-3 px-4"
+          className="cursor-pointer active:bg-muted/50 transition-colors border-b-2 bg-muted/30 py-2 px-3"
           onClick={handleCategoryClick}
         >
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <CardTitle className="text-lg font-semibold">
-                  {category.name}
-                </CardTitle>
-                <motion.span
-                  className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium shrink-0"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 25 }}
-                >
-                  {category.serviceCount} {category.serviceCount === 1 ? 'услуга' : category.serviceCount < 5 ? 'услуги' : 'услуг'}
-                </motion.span>
-              </div>
-            </div>
+          <div className="flex items-center justify-between gap-3">
+            <CardTitle className="text-lg font-semibold flex-1 min-w-0">
+              {category.name}
+            </CardTitle>
+            <motion.span
+              className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium shrink-0"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.1, type: 'spring', stiffness: 400, damping: 25 }}
+            >
+              {getServiceCountText(category.serviceCount)}
+            </motion.span>
           </div>
         </CardHeader>
 

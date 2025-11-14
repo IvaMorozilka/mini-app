@@ -20,6 +20,7 @@ import MultiSelectFilter from '@/components/MultiSelectFilter';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
+import { getServiceCountText } from '@/lib/utils';
 
 // Оптимизированные варианты для мобильных
 const containerVariants = {
@@ -161,7 +162,7 @@ export default function CategoryPageClient() {
           showBackButton={true}
           rightSide={
             <span className="text-[10px] sm:text-xs bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full font-medium whitespace-nowrap">
-              {filteredServices.length} {filteredServices.length === 1 ? 'услуга' : filteredServices.length < 5 ? 'услуги' : 'услуг'}
+              {getServiceCountText(filteredServices.length)}
             </span>
           }
         />

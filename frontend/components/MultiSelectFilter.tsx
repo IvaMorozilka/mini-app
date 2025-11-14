@@ -97,7 +97,7 @@ export default function MultiSelectFilter({
                 id={option.id}
                 checked={selected.includes(option.id)}
                 onCheckedChange={() => handleToggle(option.id)}
-                className="size-5"
+                className="size-6"
               />
               <label
                 htmlFor={option.id}
