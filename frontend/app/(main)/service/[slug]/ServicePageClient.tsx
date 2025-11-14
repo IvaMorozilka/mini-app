@@ -6,8 +6,7 @@ import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import { getServiceBySlug, getAllServices, type Service } from '@/lib/services';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Clock, FileText, CheckCircle, ExternalLink, Search } from 'lucide-react';
+import { Clock, FileText, CheckCircle, ExternalLink } from 'lucide-react';
 
 export default function ServicePageClient() {
   const params = useParams();
@@ -70,7 +69,7 @@ export default function ServicePageClient() {
 
   return (
     <>
-      {/* Sticky Header and Search Block */}
+      {/* Sticky Header Block */}
       <motion.div
         className="sticky top-[-12px] z-20 -mx-3 -mt-3 pt-3 bg-background/95 backdrop-blur-sm border-b border-border/50"
         initial={{ opacity: 0, y: -5 }}
@@ -78,17 +77,6 @@ export default function ServicePageClient() {
         transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] as const }}
       >
         <Header title={service.наименование_услуги} showBackButton={true} />
-        {/* Search Input */}
-        <div className="px-3 pt-2 pb-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Поиск..."
-              className="pl-9"
-            />
-          </div>
-        </div>
       </motion.div>
       
       <motion.div
